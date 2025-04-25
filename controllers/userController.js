@@ -15,20 +15,7 @@ exports.registerController = async (req, res) => {
     if (existingUser) {
       // Aldready a user
       res.status(406).json("Account already exits!! Please Login...");
-    } else {
-      // add / register user:create Object for Your model
-      const newUser = new users({
-        username,
-        email,
-        password,
-        github: "",
-        linkedin: "",
-        profilePic: "",
-      });
-      //   update mango db From model
-      await newUser.save();
-      res.status(200).json(newUser);
-    }
+    } 
   } catch (err) {
     res.status(401).json(err);
   }
@@ -57,19 +44,4 @@ exports.loginController = async (req,res) => {
   }
 }
 
-// edit profile
-exports.editProfileController= async (req,res) => {
-  console.log("inside editprofile controller");
-  const{username,email,password,github,linkedin,profilePic}=req.body
-  const uploadImg=req.file?req.file.filename:profilePic
-  const userId=req.payload
-  try{
-      const updatedUser=await users.findByIdAndUpdate({_id:userId},{
-          username,email,password,github,linkedin,profilePic:uploadImg
-      },{new:true})
-      await updatedUser.save()
-      res.status(200).json(updatedUser)
-  }catch(err){
-      res.status(401).json(err)
-    }
-}
+
